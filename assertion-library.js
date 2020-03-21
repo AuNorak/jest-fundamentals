@@ -1,23 +1,24 @@
-const { sum, subtract } =  require('./math')
+const chalk = require('chalk')
 
-let result, expected
-
-result = sum(4,5)
-expected = 9
-
-expect(result).toBe(expected)
-
-result = subtract(9,5)
-expected = 4
-
-expect(result).toBe(expected)
+async function test(title, callback) {
+  try {
+    await callback()
+    console.log(chalk.green(`PASSED: ${title}`))
+  } catch (error) {
+    console.error(chalk.red(`FAILED: ${title}`))
+    console.error(error)
+  }
+}
 
 function expect(actual) {
   return {
     toBe: (expected) => {
       if (actual !== expected){
-        throw new Error(`${result} is not equal to ${expected} \n`)
+        throw new Error(`${actual} is not equal to ${expected} \n`)
       }
     }
   }
 }
+
+global.expect = expect
+global.test = test
